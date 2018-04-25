@@ -1,16 +1,6 @@
 var mysql = require('mysql');
     port = process.env.PORT || 3000;
 
-if(port = 3000){
-var connection = mysql.createPool({
-connectionLimit : 100,
-host: 'localhost',
-user: 'root',
-database : 'database'
-//insecureAuth : true
-});
-}
-else{
 // prod server details
 var connection = mysql.createPool({
 connectionLimit : 100,
@@ -20,7 +10,7 @@ password: 'hike',
 database : 'regression_run'
 //insecureAuth : true
 });
-}
+
 
 connection.getConnection((err) => {
   if (err) throw err;
