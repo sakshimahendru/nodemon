@@ -4,7 +4,7 @@ var mysql = require('mysql');
 // prod server details
 var connection = mysql.createPool({
 connectionLimit : 100,
-host: '10.20.0.10',
+host: 'localhost',
 user: 'root',
 password: 'hike',
 database : 'regression_run'
