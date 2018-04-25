@@ -19,6 +19,7 @@ user: 'root',
 password: 'hike',
 database : 'regression_run'
 //insecureAuth : true
+});
 }
 
 module.exports=connection;
