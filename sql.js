@@ -22,5 +22,11 @@ database : 'regression_run'
 });
 }
 
+connection.getConnection((err) => {
+  if (err) throw err;
+  console.log('Connected!');
+  connection.release;
+});
+
 module.exports=connection;
 
