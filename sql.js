@@ -16,7 +16,7 @@ var connection = mysql.createPool({
 connectionLimit : 100,
 host: '10.20.0.10',
 user: 'root',
-password: 'hike'
+password: 'hike',
 database : 'regression_run'
 //insecureAuth : true
 }
