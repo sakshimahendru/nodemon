@@ -53,7 +53,7 @@ router.get('/', function (req, res) {
 //get all failed test %
 router.get('/failedPerc',function(req,res){
     pool.getConnection(function(err,connection){
-    connection.query(`SELECT * FROM(Select  (SUM( CASE WHEN STATUS='false' Then 1 ELSE 0 END)/COUNT(*))*100 as 'FailPerc',scenarioName from RegressionRun.ScenarioRun group by scenarioName order BY FailPerc) as FailScenarioTable where FailPerc >0;`, function(err,rows) {
+    connection.query(`SELECT * FROM(Select  (SUM( CASE WHEN STATUS='false' Then 1 ELSE 0 END)/COUNT(*))*100 as 'FailPerc',scenarioName from ScenarioRun group by scenarioName order BY FailPerc) as FailScenarioTable where FailPerc >0;`, function(err,rows) {
     console.log(pool._freeConnections.indexOf(connection)); // -1
     connection.release();
     console.log(pool._freeConnections.indexOf(connection)); // 0 
