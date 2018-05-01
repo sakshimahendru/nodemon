@@ -94,8 +94,73 @@ router.get('/:id',function(req,res){
     });
 });
 
+//get distinct runs of latest releases
+//limit 5 // count 5
+router.get('/latestruns',function(req,res){
+    pool.getConnection(function(err,connection){
+    connection.query(`SELECT t.branchName,t.branchVersion,t.totalCases,t.totalPass,t.totalFail,t.type,t.createdON FROM (select DISTINCT(branchName) 
+        from regression_run.TestRun  LIMIT 5) as b JOIN regression_run.TestRun as t ON t.branchName=b.branchName 
+AND t.id >= COALESCE((SELECT ti.id FROM regression_run.TestRun AS ti WHERE ti.id = t.id LIMIT 1 OFFSET 4), -2147483647) ORDER BY t.branchName;`, function(err,rows) {
+    console.log(pool._freeConnections.indexOf(connection)); // -1
+    connection.release();
+    console.log(pool._freeConnections.indexOf(connection)); // 0 
+                if(!err) {  
+                    var resultJson = JSON.stringify(rows);
+                    resultJson =  JSON.parse(resultJson);
+                    res.json(resultJson); 
+                }  
+                else {  
+                    console.error("From /rr/getAllRuns :" + err);         
+                    res.json(err);  
+                    }  
+                 });      
+                });
+});
+
+//get latest runs by branchVersion
+//limit 5
+router.get('latestrun/:version',function(req,res){
+    let version = req.params.version;
+     if (!version) {
+        return res.status(400).send({ error:true, message: 'Please provide branch version' });
+    }
+    pool.getConnection(function(err,connection){
+    connection.query(`Select t.branchName,t.branchVersion,t.totalCases,t.totalPass,t.totalFail,t.type,t.createdON FROM  regression_run.TestRun as t where t.branchVersion='?' order by createdON limit 5;`,[version],function(error,rows){
+    console.log(pool._freeConnections.indexOf(connection)); // -1
+    connection.release();
+    console.log(pool._freeConnections.indexOf(connection)); // 0 
+                if(!err) {  
+                    var resultJson = JSON.stringify(rows);
+                    resultJson =  JSON.parse(resultJson);
+                    return res.json(resultJson); 
+                }  
+                else {  
+                    console.error("From /rr/getAllRuns :" + err);         
+                    res.json(err);  
+                    }  
+                 });     
+    });
+});
 
 
-
+//getdistinct branchversion
+router.get('/dbranchversion',function(req,res){
+    pool.getConnection(function(err,connection){
+    connection.query(`Select distinct(branchVersion) from regression_run.TestRun  order by branchVersion desc;`, function(err,rows) {
+    console.log(pool._freeConnections.indexOf(connection)); // -1
+    connection.release();
+    console.log(pool._freeConnections.indexOf(connection)); // 0 
+                if(!err) {  
+                    var resultJson = JSON.stringify(rows);
+                    resultJson =  JSON.parse(resultJson);
+                    res.json(resultJson); 
+                }  
+                else {  
+                    console.error("From /rr/getAllRuns :" + err);         
+                    res.json(err);  
+                    }  
+                 });      
+                });
+});
 
 
