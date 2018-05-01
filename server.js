@@ -71,13 +71,13 @@ router.get('/latestruns',function(req,res){
 
 
 //get latest runs by branchVersion //limit 5
-router.get("latestrun/:version",function(req,res){
+router.get("lastrun/:version",function(req,res){
     var version = req.params.version;
      if (!version) {
         return res.status(400).send({ error:true, message: 'Please provide branch version' });
     }
     pool.getConnection(function(err,connection){
-    var query=connection.query(`Select t.branchName,t.branchVersion,t.totalCases,t.totalPass,t.totalFail,t.type,t.createdON FROM regression_run.TestRun as t where t.branchVersion=? order by createdON limit 5;`,[version],function(error,rows) {
+    var query=connection.query(`Select t.branchName,t.branchVersion,t.totalCases,t.totalPass,t.totalFail,t.type,t.createdON FROM regression_run.TestRun as t where t.branchVersion='5.9.1' order by createdON limit 5;`,[version],function(error,rows) {
     console.log(query.sql);
     console.log(query);
     console.log(pool._freeConnections.indexOf(connection)); // -1
