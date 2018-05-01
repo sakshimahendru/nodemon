@@ -70,32 +70,6 @@ router.get('/latestruns',function(req,res){
 });
 
 
-//get latest runs by branchVersion //limit 5
-router.get("lastrun/:version",function(req,res){
-    var version = req.params.version;
-     if (!version) {
-        return res.status(400).send({ error:true, message: 'Please provide branch version' });
-    }
-    pool.getConnection(function(err,connection){
-    var query=connection.query(`Select t.branchName,t.branchVersion,t.totalCases,t.totalPass,t.totalFail,t.type,t.createdON FROM regression_run.TestRun as t where t.branchVersion='?' order by createdON limit 5;`,[ version ],function(error,rows) {
-    console.log(query);
-    console.log(pool._freeConnections.indexOf(connection)); // -1
-    connection.release();
-    console.log(pool._freeConnections.indexOf(connection)); // 0 
-                if(!err) {  
-                    var resultJson = JSON.stringify(rows);
-                    resultJson =  JSON.parse(resultJson);
-                    return res.json(resultJson); 
-                }  
-                else {  
-                    console.error("From lastrun/:version" + err);         
-                    res.json(err);  
-                    }  
-                 });     
-    });
-});
-
-
 //get all regression runs
 router.get('/', function (req, res) {  
            pool.getConnection(function(err,connection){
@@ -139,6 +113,32 @@ router.get('/failedPerc',function(req,res){
                     }  
                  });      
                 });
+});
+
+
+
+//latets runs by branchVersion
+router.get('/latestruns/:version',function(req,res){
+    let version = req.params.version;
+     if (!version) {
+        return res.status(400).send({ error:true, message: 'Please provide version' });
+    }
+    pool.getConnection(function(err,connection){
+    connection.query(`Select t.branchName,t.branchVersion,t.totalCases,t.totalPass,t.totalFail,t.type,t.createdON FROM  regression_run.TestRun as t where t.branchVersion='?' order by createdON limit 5;`,[ version ],function(error,rows){
+    console.log(pool._freeConnections.indexOf(connection)); // -1
+    connection.release();
+    console.log(pool._freeConnections.indexOf(connection)); // 0 
+                if(!err) {  
+                    var resultJson = JSON.stringify(rows);
+                    resultJson =  JSON.parse(resultJson);
+                    return res.json(resultJson); 
+                }  
+                else {  
+                    console.error("From /latestruns/:branchverison' :" + err);         
+                    res.json(err);  
+                    }  
+                 });     
+    });
 });
 
 
