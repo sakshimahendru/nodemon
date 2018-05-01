@@ -41,7 +41,7 @@ router.get('/dbranchversion',function(req,res){
                     res.json(resultJson); 
                 }  
                 else {  
-                    console.error("From /rr/getAllRuns :" + err);         
+                    console.error("From /dbranchversion:" + err);         
                     res.json(err);  
                     }  
                  });      
@@ -61,7 +61,7 @@ router.get('/latestruns',function(req,res){
                     res.json(resultJson); 
                 }  
                 else {  
-                    console.error("From /rr/getAllRuns :" + err);         
+                    console.error("From /latestruns:" + err);         
                     res.json(err);  
                     }  
                  });      
@@ -86,7 +86,7 @@ router.get('latestrun/:version',function(req,res){
                     return res.json(resultJson); 
                 }  
                 else {  
-                    console.error("From /rr/getAllRuns :" + err);         
+                    console.error("From latestrun/:version :" + err);         
                     res.json(err);  
                     }  
                  });     
@@ -109,7 +109,7 @@ router.get('/', function (req, res) {
                     //res.json(rows);  
                 }  
                 else {  
-                    console.error("From /rr/getAllRuns :" + err);         
+                    console.error("From / :" + err);         
                     res.json(err);  
                     }
                }); 
@@ -130,7 +130,7 @@ router.get('/failedPerc',function(req,res){
                     res.json(resultJson); 
                 }  
                 else {  
-                    console.error("From /rr/getAllRuns :" + err);         
+                    console.error("From /failedPerc :" + err);         
                     res.json(err);  
                     }  
                  });      
@@ -154,7 +154,7 @@ router.get('/:id',function(req,res){
                     return res.json(resultJson); 
                 }  
                 else {  
-                    console.error("From /rr/getAllRuns :" + err);         
+                    console.error("From /:id' :" + err);         
                     res.json(err);  
                     }  
                  });     
