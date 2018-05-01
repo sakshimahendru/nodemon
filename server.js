@@ -119,7 +119,7 @@ router.get('/failedPerc',function(req,res){
 
 //latets runs by branchVersion
 router.get('/latestrun/:version',function(req,res){
-    let version = req.params.version;
+    var version = req.params.version;
      if (!version) {
         return res.status(400).send({ error:true, message: 'Please provide version' });
     }
