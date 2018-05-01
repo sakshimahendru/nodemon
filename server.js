@@ -28,7 +28,7 @@ app.use('/rr',router);
 pool = require('./sql');
 
 
-/getdistinct branchversion
+//getdistinct branchversion
 router.get('/dbranchversion',function(req,res){
     pool.getConnection(function(err,connection){
     connection.query(`Select distinct(branchVersion) from regression_run.TestRun  order by branchVersion desc;`, function(err,rows) {
