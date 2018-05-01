@@ -77,8 +77,7 @@ router.get("lastrun/:version",function(req,res){
         return res.status(400).send({ error:true, message: 'Please provide branch version' });
     }
     pool.getConnection(function(err,connection){
-    var query=connection.query(`Select t.branchName,t.branchVersion,t.totalCases,t.totalPass,t.totalFail,t.type,t.createdON FROM regression_run.TestRun as t where t.branchVersion='5.9.1' order by createdON limit 5;`,[ version ],function(error,rows) {
-    console.log(query.sql);
+    var query=connection.query('Select t.branchName,t.branchVersion,t.totalCases,t.totalPass,t.totalFail,t.type,t.createdON FROM regression_run.TestRun as t where t.branchVersion=? order by createdON limit 5;',[ version ],function(error,rows) {
     console.log(query);
     console.log(pool._freeConnections.indexOf(connection)); // -1
     connection.release();
@@ -89,7 +88,7 @@ router.get("lastrun/:version",function(req,res){
                     return res.json(resultJson); 
                 }  
                 else {  
-                    console.error("From lastrun/:version :" + err);         
+                    console.error("From lastrun/:version" + err);         
                     res.json(err);  
                     }  
                  });     
