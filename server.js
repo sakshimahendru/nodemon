@@ -67,7 +67,7 @@ router.get('/latestruns',function(req,res){
                     // var resultJson = JSON.stringify(rows);
                     // resultJson =  JSON.parse(resultJson);
                     // res.json(resultJson);
-           var newDict= {};
+           var newDict = {};
 
            Object.values(rows).map(function(s,e){
            newDict[s.branchName]=[];//push(s);
@@ -77,9 +77,9 @@ router.get('/latestruns',function(req,res){
            newDict[s.branchName].push(s);
             });
 
-           console.log(newDict) =;
+           console.log(newDict);
            res.json(newDict);
-           
+
                 }  
                 else {  
                     console.error("From /latestruns:" + err);         
