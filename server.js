@@ -42,7 +42,7 @@ router.get('/dbranchversion',function(req,res){
                    var myObj,i;
 
                     var resultJson = rows.map(function(val) {
-                        return val.branchversion;
+                        return val.branchVersion;
                           });
 
                    console.log(resultJson)
