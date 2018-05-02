@@ -36,16 +36,9 @@ router.get('/dbranchversion',function(req,res){
     connection.release();
     console.log(pool._freeConnections.indexOf(connection)); // 0 
                 if(!err) {  
-                    //var resultJson = JSON.stringify(rows);
-                    //resultJson =  JSON.parse(resultJson);
-                    //res.json(resultJson);
-                   var myObj,i;
-
                     var resultJson = rows.map(function(val) {
                         return val.branchVersion;
                           });
-                 
-                      console.log(resultJson);
                       var newresult ={};
                       newresult['branchVersion'] = resultJson;
                       res.json(newresult);
@@ -63,14 +56,30 @@ router.get('/dbranchversion',function(req,res){
 //get distinct runs of latest releases //limit 5 // count 5
 router.get('/latestruns',function(req,res){
     pool.getConnection(function(err,connection){
-    connection.query(`SELECT t.branchName,t.branchVersion,t.totalCases,t.totalPass,t.totalFail,t.type,t.createdON FROM (select DISTINCT(branchName) from regression_run.TestRun  LIMIT 5) as b JOIN regression_run.TestRun as t ON t.branchName=b.branchName AND t.id >= COALESCE((SELECT ti.id FROM regression_run.TestRun AS ti WHERE ti.id = t.id LIMIT 1 OFFSET 4), -2147483647) ORDER BY t.branchName;`, function(err,rows) {
+    connection.query(`SELECT t.branchName,t.branchVersion,t.totalCases,t.totalPass,
+        t.totalFail,t.type,t.createdON FROM (select DISTINCT(branchName) from regression_run.TestRun  LIMIT 5)
+         as b JOIN regression_run.TestRun as t ON t.branchName=b.branchName AND t.id >= COALESCE(
+         (SELECT ti.id FROM regression_run.TestRun AS ti WHERE ti.id = t.id LIMIT 1 OFFSET 4), -2147483647) ORDER BY t.branchName;`, function(err,rows) {
     console.log(pool._freeConnections.indexOf(connection)); // -1
     connection.release();
     console.log(pool._freeConnections.indexOf(connection)); // 0 
                 if(!err) {  
-                    var resultJson = JSON.stringify(rows);
-                    resultJson =  JSON.parse(resultJson);
-                    res.json(resultJson); 
+                    // var resultJson = JSON.stringify(rows);
+                    // resultJson =  JSON.parse(resultJson);
+                    // res.json(resultJson);
+           var newDict= {};
+
+           Object.values(rows).map(function(s,e){
+           newDict[s.branchName]=[];//push(s);
+           });
+
+           Object.values(rows).map(function(s,e){
+           newDict[s.branchName].push(s);
+            });
+
+           console.log(newDict) =;
+           res.json(newDict);
+           
                 }  
                 else {  
                     console.error("From /latestruns:" + err);         
