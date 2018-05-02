@@ -36,9 +36,18 @@ router.get('/dbranchversion',function(req,res){
     connection.release();
     console.log(pool._freeConnections.indexOf(connection)); // 0 
                 if(!err) {  
-                    var resultJson = JSON.stringify(rows);
-                    resultJson =  JSON.parse(resultJson);
-                    res.json(resultJson); 
+                    //var resultJson = JSON.stringify(rows);
+                    //resultJson =  JSON.parse(resultJson);
+                    //res.json(resultJson);
+                   var myObj,i;
+
+                    var resultJson = rows.map(function(val) {
+                        return val.branchversion;
+                          });
+
+                   console.log(resultJson)
+                   res.json(resultJson);
+
                 }  
                 else {  
                     console.error("From /dbranchversion:" + err);         
